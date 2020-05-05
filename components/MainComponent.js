@@ -11,13 +11,27 @@ import { createStackNavigator} from '@react-navigation/stack';
 import { createDrawerNavigator ,DrawerItemList, DrawerContentScrollView } from '@react-navigation/drawer';
 import { NavigationContainer } from '@react-navigation/native';
 import {SafeAreaProvider, SafeAreaView} from 'react-native-safe-area-context';
-
+import { fetchDishes, fetchComments, fetchPromos, fetchLeaders} from '../redux/ActionCreators';
 
 const MainDrawerStack = createDrawerNavigator();
 const HomeStack = createStackNavigator();
 const MenuStack = createStackNavigator();
 const AboutStack = createStackNavigator();
 const ContactStack = createStackNavigator();
+import { connect } from 'react-redux';
+
+const mapStateToProps = state => {
+  return {
+  }
+}
+
+const mapDispatchToProps = dispatch => ({
+  fetchDishes: () => dispatch(fetchDishes()),
+  fetchComments: () => dispatch(fetchComments()),
+  fetchPromos: () => dispatch(fetchPromos()),
+  fetchLeaders: () => dispatch(fetchLeaders()),
+})
+
 
 const AboutNavigator = () => {
     return (
@@ -201,6 +215,12 @@ const MainNavigator = () => {
 
 class Main extends Component {
 
+    componentDidMount() {
+    this.props.fetchDishes();
+    this.props.fetchComments();
+    this.props.fetchPromos();
+    this.props.fetchLeaders();
+  }
 
     render(){
         return(
@@ -236,4 +256,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default Main;
+export default connect(mapStateToProps, mapDispatchToProps)(Main);
