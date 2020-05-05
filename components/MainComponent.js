@@ -4,6 +4,8 @@ import Home from './HomeComponent';
 import DishDetail from './DishDetailComponent';
 import AboutUs from './AboutComponent';
 import ContactUs from './ContactComponent';
+import Reservation from './ReservationComponent';
+
 import {Icon} from 'react-native-elements'; 
 
 import { View, Platform , Image, StyleSheet, ScrollView, Text} from 'react-native';
@@ -12,13 +14,16 @@ import { createDrawerNavigator ,DrawerItemList, DrawerContentScrollView } from '
 import { NavigationContainer } from '@react-navigation/native';
 import {SafeAreaProvider, SafeAreaView} from 'react-native-safe-area-context';
 import { fetchDishes, fetchComments, fetchPromos, fetchLeaders} from '../redux/ActionCreators';
+import { connect } from 'react-redux';
 
 const MainDrawerStack = createDrawerNavigator();
 const HomeStack = createStackNavigator();
 const MenuStack = createStackNavigator();
 const AboutStack = createStackNavigator();
 const ContactStack = createStackNavigator();
-import { connect } from 'react-redux';
+const ReservationStack = createStackNavigator();
+
+
 
 const mapStateToProps = state => {
   return {
@@ -144,6 +149,31 @@ const CustomDrawerContentComponent = (props) =>{
     </ScrollView>
   ) ;
 }
+const ReservationNavigator = () => {
+  return (
+    <ReservationStack.Navigator
+      headerMode='screen'
+      screenOptions={{
+        headerStyle: {
+          backgroundColor: '#512DA8',
+        },
+        headerTintColor: '#fff',
+        headerTitleStyle: {
+          color: '#fff',
+        },
+
+      }}
+    >
+      <ReservationStack.Screen name='Contact Us' component={Reservation} options={({ navigation, route }) => ({
+          headerLeft: () => (
+            <Icon name='menu' size={24} color='white' 
+            onPress={() => navigation.toggleDrawer()}></Icon>
+    )
+        })}/>
+    </ReservationStack.Navigator>
+  );
+};
+
 const MainNavigator = () => {
     return (
       <MainDrawerStack.Navigator
@@ -209,6 +239,17 @@ const MainNavigator = () => {
             </Icon>) }}
           component={ContactNavigator}
         />
+         <MainDrawerStack.Screen
+          name='Reserve Table'
+          options={{ drawerLabel: 'Reserve Table' , 
+          drawerIcon: ({tintColor, focused})=>(
+            <Icon 
+                name='cutlery'
+                type='font-awesome'
+                size={24}
+                color={tintColor}>
+            </Icon>)}}
+          component={ReservationNavigator}/>
       </MainDrawerStack.Navigator>
     );
   }
