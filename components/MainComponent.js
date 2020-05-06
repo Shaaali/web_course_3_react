@@ -25,7 +25,6 @@ const ContactStack = createStackNavigator();
 const ReservationStack = createStackNavigator();
 const FavoritesStack = createStackNavigator();
 
-
 const mapStateToProps = state => {
   return {
   }
