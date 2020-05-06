@@ -1,3 +1,4 @@
+import { exp } from "react-native-reanimated";
 
 export const DISHES_LOADING = 'DISHES_LOADING';
 export const ADD_DISHES = 'ADD_DISHES';
@@ -15,3 +16,5 @@ export const POST_FAVORITE = 'POST_FAVORITE';
 export const ADD_FAVORITE = 'ADD_FAVORITE';
 
 export const ADD_COMMENT = 'ADD_COMMENT';
+
+export const DELETE_FAVORITE = 'DELETE_VAVORITE'

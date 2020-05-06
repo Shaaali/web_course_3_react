@@ -5,6 +5,7 @@ import DishDetail from './DishDetailComponent';
 import AboutUs from './AboutComponent';
 import ContactUs from './ContactComponent';
 import Reservation from './ReservationComponent';
+import Favorites from './FavoriteComponent';
 
 import {Icon} from 'react-native-elements'; 
 
@@ -22,7 +23,7 @@ const MenuStack = createStackNavigator();
 const AboutStack = createStackNavigator();
 const ContactStack = createStackNavigator();
 const ReservationStack = createStackNavigator();
-
+const FavoritesStack = createStackNavigator();
 
 
 const mapStateToProps = state => {
@@ -34,8 +35,33 @@ const mapDispatchToProps = dispatch => ({
   fetchDishes: () => dispatch(fetchDishes()),
   fetchComments: () => dispatch(fetchComments()),
   fetchPromos: () => dispatch(fetchPromos()),
-  fetchLeaders: () => dispatch(fetchLeaders()),
+  fetchLeaders: () => dispatch(fetchLeaders())
 })
+
+const FavoritesNavigator = () => {
+  return (
+    <FavoritesStack.Navigator
+      headerMode='screen'
+      screenOptions={{
+        headerStyle: {
+          backgroundColor: '#512DA8',
+        },
+        headerTintColor: '#fff',
+        headerTitleStyle: {
+          color: '#fff',
+        },
+
+      }}
+    >
+      <ContactStack.Screen name='Favorites' component={Favorites} options={({ navigation, route }) => ({
+          headerLeft: () => (
+            <Icon name='menu' size={24} color='white' 
+            onPress={() => navigation.toggleDrawer()}></Icon>
+    )
+        })}/>
+    </FavoritesStack.Navigator>
+  );
+};
 
 
 const AboutNavigator = () => {
@@ -250,6 +276,19 @@ const MainNavigator = () => {
                 color={tintColor}>
             </Icon>)}}
           component={ReservationNavigator}/>
+      
+        <MainDrawerStack.Screen
+        name='Favorites'
+        options={{ drawerLabel: 'Favorites' , 
+        drawerIcon: ({tintColor, focused})=>(
+          <Icon 
+              name='heart'
+              type='font-awesome'
+              size={24}
+              color={tintColor}>
+          </Icon>)}}
+        component={FavoritesNavigator}/>
+
       </MainDrawerStack.Navigator>
     );
   }
