@@ -10,13 +10,14 @@ import Login from './LoginComponent';
 
 import {Icon} from 'react-native-elements'; 
 
-import { View, Platform , Image, StyleSheet, ScrollView, Text} from 'react-native';
 import { createStackNavigator} from '@react-navigation/stack';
 import { createDrawerNavigator ,DrawerItemList, DrawerContentScrollView } from '@react-navigation/drawer';
 import { NavigationContainer } from '@react-navigation/native';
 import {SafeAreaProvider, SafeAreaView} from 'react-native-safe-area-context';
 import { fetchDishes, fetchComments, fetchPromos, fetchLeaders} from '../redux/ActionCreators';
 import { connect } from 'react-redux';
+import { View, Platform,Image,StyleSheet, ScrollView , Text, ToastAndroid} from 'react-native';
+import NetInfo from "@react-native-community/netinfo";
 
 const MainDrawerStack = createDrawerNavigator();
 const HomeStack = createStackNavigator();
@@ -337,7 +338,40 @@ class Main extends Component {
     this.props.fetchComments();
     this.props.fetchPromos();
     this.props.fetchLeaders();
+ 
+
+  NetInfo.fetch()
+  .then(connectionInfo => {
+    ToastAndroid.show("Initial Network Connectivity type " + connectionInfo.type + " Is connected? "+ connectionInfo.isConnected, ToastAndroid.LONG);
+    
+  });
+
+  NetInfo.addEventListener(connectionInfo => {
+    this.handleConnectivityChange(connectionInfo);
+  });
+
+}
+
+
+handleConnectivityChange = (connectionInfo) => {
+  switch (connectionInfo.type) {
+    case 'none':
+      ToastAndroid.show('You are now offline!', ToastAndroid.LONG);
+      break;
+    case 'wifi':
+      ToastAndroid.show('You are now connected to WiFi!', ToastAndroid.LONG);
+      break;
+    case 'cellular':
+      ToastAndroid.show('You are now connected to Cellular!', ToastAndroid.LONG);
+      break;
+    case 'unknown':
+      ToastAndroid.show('You now have unknown connection!', ToastAndroid.LONG);
+      break;
+    default:
+      break;
   }
+}
+
 
     render(){
         return(
