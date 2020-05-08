@@ -6,6 +6,8 @@ import * as ImagePicker from 'expo-image-picker';
 import * as Permissions from 'expo-permissions';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import {baseUrl} from '../shared/baseUrl';
+import * as ImageManipulator from "expo-image-manipulator";
+import {Asset} from 'expo';
 
 class LoginTab extends Component{
     constructor(props) {
@@ -33,6 +35,8 @@ class LoginTab extends Component{
        
     };
 
+    
+
     handleLogin() {
         console.log(JSON.stringify(this.state));
         if (this.state.remember)
@@ -42,13 +46,11 @@ class LoginTab extends Component{
         else
             SecureStore.deleteItemAsync('userinfo')
                 .catch((error) => console.log('Could not delete user info', error));
-            
-        
-
     }
 
     render() {
         return (
+            <ScrollView>
             <View style={styles.container}>
                 <Input
                     placeholder="Username"
@@ -72,12 +74,41 @@ class LoginTab extends Component{
                     />
                 <View style={styles.formButton}>
                     <Button
-                        onPress={() => this.handleLogin()}
-                        title="Login"
-                        color="#512DA8"
+                            onPress={() => this.handleLogin()}
+                            title="Login"
+                            icon={
+                                <Icon
+                                    name='sign-in'
+                                    type='font-awesome'            
+                                    size={24}
+                                    color= 'white'
+                                />
+                            }
+                            buttonStyle={{
+                                backgroundColor: "#512DA8"
+                            }}
+                            />
+                </View>
+                <View style={styles.formButton}>
+                    <Button
+                        onPress={() => this.props.navigation.navigate('Register')}
+                        title="Register"
+                        clear
+                        icon={
+                            <Icon
+                                name='user-plus'
+                                type='font-awesome'            
+                                size={24}
+                                color= 'blue'
+                            />
+                        }
+                        titleStyle={{
+                            color: "blue"
+                        }}
                         />
                 </View>
             </View>
+            </ScrollView>
         );
     }
 
@@ -107,10 +138,21 @@ class RegisterTab extends Component{
                 aspect: [4,3]
             });
             if (!capturedImage.cancelled) {
-                this.setState({imageUrl: capturedImage.uri})
+                this.processImage( capturedImage.uri);
             }
             
         }
+    }
+
+    processImage=async(imageUri) => {
+       let processedImage =  await ImageManipulator.manipulateAsync(
+           imageUri,
+           [
+               {resize: {width:400}}
+           ],
+           {format: 'png'}
+       );
+       this.setState({imageUrl: processedImage.uri})
     }
 
     handleRegister(){
