@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
-import { Text, View, ScrollView, StyleSheet, Picker, Switch, Button, Modal } from 'react-native';
+import { Text, View, ScrollView, StyleSheet, Picker, Switch, Button, Modal, Alert} from 'react-native';
 import { Card } from 'react-native-elements';
 import DatePicker from 'react-native-datepicker';
+import * as Animatable from 'react-native-animatable';
 
 
 class Reservation extends Component {
@@ -26,6 +27,28 @@ class Reservation extends Component {
     handleReservation() {
         console.log(JSON.stringify(this.state));
         this.toggleModal();
+        Alert.alert(
+            'Confirm Reservation',
+            'Reservation details are \n Number of Guests: ' 
+            + this.state.guests +
+            '\n Smoking: '
+            + this.state.smoking +
+            '\n Date: '
+            +this.state.date.toString()
+            ,
+            [
+               { 
+                   text: 'Cancel',
+                   onPress: () => this.resetForm(),
+                   style: 'cancel'
+                },
+                {
+                    text: 'Reserve',
+                    onPress: () => this.resetForm()
+                }
+            ],
+            { cancelable: false}
+        )
        
     }
 
@@ -40,7 +63,8 @@ class Reservation extends Component {
 
     render(){
         return(
-            <ScrollView>
+                 <ScrollView>
+                  <Animatable.View animation="zoomIn" duration={2000} delay={1000} >
                 <View style={styles.formRow}>
                     <Text style={styles.formLabel}> Number of Guests</Text>
                     <Picker 
@@ -101,10 +125,13 @@ class Reservation extends Component {
                         accessibilityLabel="Learn more about this purple button"
                         />
                 </View>
+
+            </Animatable.View>
+           
                 <Modal
                     animationType={'slide'}
                     transparent={false}
-                    visible={this.state.showModal}
+                    visible =  {false }
                     onDismiss={()=> {this.toggleModal(); this.resetForm()}}
                     onRequestClose={()=> {this.toggleModal(); this.resetForm()}}
                     >

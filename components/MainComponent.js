@@ -6,6 +6,7 @@ import AboutUs from './AboutComponent';
 import ContactUs from './ContactComponent';
 import Reservation from './ReservationComponent';
 import Favorites from './FavoriteComponent';
+import Login from './LoginComponent';
 
 import {Icon} from 'react-native-elements'; 
 
@@ -24,6 +25,7 @@ const AboutStack = createStackNavigator();
 const ContactStack = createStackNavigator();
 const ReservationStack = createStackNavigator();
 const FavoritesStack = createStackNavigator();
+const LoginStack = createStackNavigator();
 
 const mapStateToProps = state => {
   return {
@@ -59,6 +61,31 @@ const FavoritesNavigator = () => {
     )
         })}/>
     </FavoritesStack.Navigator>
+  );
+};
+
+const LoginNavigator = () => {
+  return (
+    <LoginStack.Navigator
+      headerMode='screen'
+      screenOptions={{
+        headerStyle: {
+          backgroundColor: '#512DA8',
+        },
+        headerTintColor: '#fff',
+        headerTitleStyle: {
+          color: '#fff',
+        },
+
+      }}
+    >
+      <LoginStack.Screen name='Login' component={Login} options={({ navigation, route }) => ({
+          headerLeft: () => (
+            <Icon name='menu' size={24} color='white' 
+            onPress={() => navigation.toggleDrawer()}></Icon>
+    )
+        })}/>
+    </LoginStack.Navigator>
   );
 };
 
@@ -216,6 +243,17 @@ const MainNavigator = () => {
         screenOptions={{ drawerBackgroundColor: '#D1C4E9' }}
         drawerContent= {props => <CustomDrawerContentComponent {...props} />}
         >
+        <MainDrawerStack.Screen
+          name='Login'
+          options={{ drawerLabel: 'Login' , 
+          drawerIcon: ({tintColor, focused})=>(
+            <Icon 
+                name='sign-in'
+                type='font-awesome'
+                size={24}
+                color={tintColor}>
+            </Icon>)}}
+          component={LoginNavigator}/> 
         <MainDrawerStack.Screen
           name='Menu'
           options={{ drawerLabel: 'Menu',
