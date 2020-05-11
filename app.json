@@ -1,15 +1,15 @@
 {
   "expo": {
-    "name": "conFusion",
-    "slug": "conFusion",
+    "sdkVersion" : "37.0.0",
+    "name": "confusion",
+    "slug": "confusion",
+    "icon":"./icon.png",
     "platforms": [
       "ios",
-      "android",
-      "web"
+      "android"
     ],
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
@@ -22,7 +22,10 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "bundleIdentifier":"net.food.confusion.confusion"
+    },
+    "android":{
+      "package": "net.food.confusion.confusion"
     }
   }
 }
